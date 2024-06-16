@@ -1,8 +1,12 @@
 import * as React from "react";
+import axios from "axios";
+import { signIn } from "next-auth/react";
+import { useRouter } from "next/navigation";
 
 import { Input } from "~/components/Input";
 
 function Auth() {
+  const router = useRouter();
   const [email, setEmail] = React.useState<string>("");
   const [username, setUsername] = React.useState<string>("");
   const [password, setPassword] = React.useState<string>("");
@@ -12,6 +16,35 @@ function Auth() {
   const toggleVariant = React.useCallback(() => {
     setVariant((prev) => (prev === "login" ? "register" : "login"));
   }, []);
+
+  const login = React.useCallback(async () => {
+    try {
+      await signIn("credentials", {
+        email,
+        password,
+        redirect: false,
+        callbackUrl: "/",
+      });
+
+      router.push("/");
+    } catch (error) {
+      console.log(error);
+    }
+  }, [email, password, router]);
+
+  const register = React.useCallback(async () => {
+    try {
+      await axios.post("/api/register", {
+        email,
+        username,
+        password,
+      });
+
+      login();
+    } catch (error) {
+      console.log(error);
+    }
+  }, [email, username, password, login]);
 
   return (
     <div className="relative h-full w-full bg-[url('/images/hero.jpg')] bg-no-repeat bg-center bg-fixed bg-cover">
@@ -49,7 +82,10 @@ function Auth() {
               />
             </div>
 
-            <button className="bg-red-600 py-3 text-white rounded-md w-full mt-10 hover:bg-red-700 transition">
+            <button
+              onClick={variant === "register" ? register : login}
+              className="bg-red-600 py-3 text-white rounded-md w-full mt-10 hover:bg-red-700 transition"
+            >
               {variant === "register" ? "Sign up" : "Login"}
             </button>
 
