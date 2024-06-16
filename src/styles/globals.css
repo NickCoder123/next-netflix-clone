@@ -8,7 +8,7 @@ body {
 
 html,
 body,
-#__next,
-:root {
-  height: 100%;
+:root,
+#__next {
+  @apply h-full;
 }
