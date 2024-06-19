@@ -2,6 +2,7 @@ import * as React from "react";
 import { InfoCircledIcon } from "@radix-ui/react-icons";
 
 import useBillboard from "~/hooks/useBillboard";
+import { PlayButton } from "./PlayButton";
 
 export function Billboard() {
   const { data } = useBillboard();
@@ -24,8 +25,9 @@ export function Billboard() {
           {data?.description}
         </p>
         <div className="flex flex-row items-center mt-3 md:mt-4 gap-3">
+          <PlayButton movieId={data?.id} />
           <button className="bg-white text-white bg-opacity-30 rounded-md py-1 md:py-2 px-2 md:px-4 w-auto text-xs lg:text-lg font-semibold flex flex-row items-center hover:bg-opacity-20 transition">
-            <InfoCircledIcon className="mr-2" />
+            <InfoCircledIcon className="mr-2 h-[25px] w-[25px]" />
             More Info
           </button>
         </div>
