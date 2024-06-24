@@ -1,9 +1,12 @@
 import * as React from "react";
-import { PlayIcon } from "@radix-ui/react-icons";
+import { ChevronDownIcon, PlayIcon } from "@radix-ui/react-icons";
 import { useRouter } from "next/router";
+
+import useInfoModal from "~/hooks/useInfoModal";
 
 export function MovieCard({ data }: { data: Record<string, any> }) {
   const router = useRouter();
+  const { openModal } = useInfoModal();
 
   return (
     <div className="group bg-neutral-900 col-span relative h-[12vw]">
@@ -25,6 +28,12 @@ export function MovieCard({ data }: { data: Record<string, any> }) {
               onClick={() => router.push(`/watch/${data.id}`)}
             >
               <PlayIcon className="w-4 h-4" />
+            </div>
+            <div
+              onClick={() => openModal(data?.id)}
+              className="cursor-pointer ml-auto group/item w-6 h-6 lg:w-10 lg:h-10 border-white border-2 rounded-full flex justify-center items-center transition hover:border-neutral-300"
+            >
+              <ChevronDownIcon className="w-[30px] h-[30px] text-white group-hover/item:text-neutral-300" />
             </div>
           </div>
 
